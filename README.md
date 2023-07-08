@@ -3,11 +3,11 @@ Explore your ComfyUI installations node classes for their functionality, source 
 
 <img src="https://i.imgur.com/XTGyBXN.jpg" />
 
-## Installation
+# Installation
 
 The easiest way to install Node Dictionary is to install to ComfyUI Portable, then simply extract this archive to your base directory where your `run_nvidia_gpu.bat` and `run_cpu.bat` files. Then launch `run_comfy_dictionary.bat` to start the Node Dictionary server. 
 
-### Manual installation
+## Manual installation
 
 - Clone or downlaod a zip of the repo.
 - Move `comfy_dictionary.py` to ComfyUI folder of ComfyUI installation. (Ex: `C:\ComfyUI_windows_portable\ComfyUI`)
@@ -18,6 +18,17 @@ C:\ComfyUI_windows_portable\python_embeded\python.exe -s C:\ComfyUI_windows_port
 
 pause
 ```
+
+## Launch Flags
+
+ - `--no-source-code` - Don't scrape, store, or display source code from node classes.
+ - `--update-classes` - Update the database for any changes to node classes.
+ - `--update-plist` - Download a new version of the ComfyUI Manger plugin list.
+ - `--no-plist` - Do not download or display ComfyUI Manager plugin list.
+ - `--offline` - Do not use online functionality.
+ - `--no-pygments` - Do not use Pygments source code highlighting.
+ - `--no-browser` - Do not launch system browser when the server launches.
+
 
 # For Developers
 
