@@ -18,6 +18,7 @@ C:\ComfyUI_windows_portable\python_embeded\python.exe -s C:\ComfyUI_windows_port
 
 pause
 ```
+- Run your `run_comfy_dictionary.bat` file. Your browser will open to `http://127.0.0.1:8189` During first run, a database mapping all relevant class information will be created to be loaded on subsequent runs.
 
 ## Launch Flags
 
