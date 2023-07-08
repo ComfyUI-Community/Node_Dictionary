@@ -5,7 +5,7 @@ Explore your ComfyUI installations node classes for their functionality, source 
 
 # Installation
 
-The easiest way to install Node Dictionary is to install to ComfyUI Portable, then simply extract this archive to your base directory where your `run_nvidia_gpu.bat` and `run_cpu.bat` files. Then launch `run_comfy_dictionary.bat` to start the Node Dictionary server. 
+The easiest way to install Node Dictionary is to install to ComfyUI Portable, then simply [downlaod and extract this archive](https://drive.google.com/file/d/1MiBKIu9jHD9rjrBgCjDCSMcCzuFrpT-Q/view?usp=sharing) to your base directory where your `run_nvidia_gpu.bat` and `run_cpu.bat` files. Then launch `run_comfy_dictionary.bat` to start the Node Dictionary server. 
 
 ## Manual installation
 
