@@ -1,11 +1,13 @@
 # ComfyUI Node Dictionary
 Explore your ComfyUI installations node classes for their functionality, source code, and more. 
 
-<img src="https://i.imgur.com/XTGyBXN.jpg" />
+<p align="center"><img src="https://i.imgur.com/XTGyBXN.jpg" />
+<a href="https://i.postimg.cc/vQzHqtPC/Screenshot-2023-07-14-135732.png"><img width="300" src="https://i.postimg.cc/vQzHqtPC/Screenshot-2023-07-14-135732.png"></a><a href="https://i.postimg.cc/TYVXyTFB/Screenshot-2023-07-14-135610.png"><img width="300" src="https://i.postimg.cc/TYVXyTFB/Screenshot-2023-07-14-135610.png"></a><a href="https://i.postimg.cc/rFXkFDnS/Screenshot-2023-07-14-135706.png"><img width="300" src="https://i.postimg.cc/rFXkFDnS/Screenshot-2023-07-14-135706.png"></a></p>
 
 # Installation
 
 The easiest way to install Node Dictionary is to install to ComfyUI Portable, then simply [downlaod and extract this archive](https://drive.google.com/file/d/1MiBKIu9jHD9rjrBgCjDCSMcCzuFrpT-Q/view?usp=sharing) to your base directory where your `run_nvidia_gpu.bat` and `run_cpu.bat` files. Then launch `run_comfy_dictionary.bat` to start the Node Dictionary server. 
+
 
 ## Manual installation
 
@@ -29,6 +31,9 @@ pause
  - `--offline` - Do not use online functionality.
  - `--no-pygments` - Do not use Pygments source code highlighting.
  - `--no-browser` - Do not launch system browser when the server launches.
+ - `--image_paths` - Specify extra image gallery paths like `--image_paths "C:\Users\node_dictionary\Pictures, C:\other\output\folder"`
+ - `--purge-cache` - Clear the gallery thumbnail cache on startup.
+ - `--no-gallery` - Disable *all* image galleries **(not implemented)**
 
 ### Requirements 
  -  [ComfyUI](https://github.com/comfyanonymous/ComfyUI)
