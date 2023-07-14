@@ -20,7 +20,7 @@ pause
 ```
 - Run your `run_comfy_dictionary.bat` file. Your browser will open to `http://127.0.0.1:8189` During first run, a database mapping all relevant class information will be created to be loaded on subsequent runs.
 
-## Launch Flags
+### Launch Flags
 
  - `--no-source-code` - Don't scrape, store, or display source code from node classes.
  - `--update-classes` - Update the database for any changes to node classes.
@@ -30,6 +30,9 @@ pause
  - `--no-pygments` - Do not use Pygments source code highlighting.
  - `--no-browser` - Do not launch system browser when the server launches.
 
+### Requirements 
+ -  [ComfyUI](https://github.com/comfyanonymous/ComfyUI)
+ -  Pygments (Will install on launch if not present)
 
 # For Developers
 
