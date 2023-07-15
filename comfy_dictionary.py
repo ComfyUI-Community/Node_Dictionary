@@ -325,103 +325,108 @@ def compress_image(category, path):
         
     return b''
     
+import inspect
+
 def scrape_classes():
     classes = {}
     category_index = 0
     with tqdm(total=len(NODE_CLASS_MAPPINGS_CATEGORIZED), desc="Loading categories") as pbar_category:
         for category, nodes in NODE_CLASS_MAPPINGS_CATEGORIZED.items():
-            module_path = category
-            category = os.path.basename(category).replace('_', ' ').replace('-', ' ').upper()
-            category_info = {
-                "category": category,
-                "classes": {}
-            }
-            with tqdm(total=len(nodes), desc=category, leave=False) as pbar_class:
-                for name, node in sorted(nodes.items()):
-                    class_info = {
-                        "input_types": {
-                            "required": {},
-                            "optional": {}
-                        },
-                        "return_types": [],
-                        "return_names": [],
-                        "function": "",
-                        "function_category": "",
-                        "description": None,
-                        "url": None,
-                        "workflow_url": None,
-                        "images": None,
-                        "class_name": name,
-                        "display_name": NODE_DISPLAY_NAME_MAPPINGS.get(name, None),
-                        "manifest": {},
-                    }
-                    
-                    pbar_class.set_postfix_str(node.__name__)
-                    
-                    if not hasattr(node, "INPUT_TYPES"):
-                        continue
-                    
-                    class_info["module_path"] = module_path
-                    
-                    class_info["input_types"]["required"] = node.INPUT_TYPES().get("required", {})
-                    class_info["input_types"]["optional"] = node.INPUT_TYPES().get("optional", {})
-                    
-                    for required_key in class_info["input_types"]["required"].keys():
-                        if (isinstance(class_info["input_types"]["required"][required_key], tuple) 
-                            and all(isinstance(item, str) for item in class_info["input_types"]["required"][required_key])):
-                            class_info["input_types"]["required"][required_key] = {"data_type": class_info["input_types"]["required"][required_key]}
-                            
-                    for optional_key in class_info["input_types"]["optional"].keys():
-                        if (isinstance(class_info["input_types"]["optional"][optional_key], tuple) 
-                            and all(isinstance(item, str) for item in class_info["input_types"]["optional"][optional_key])):
-                            class_info["input_types"]["optional"][optional_key] = {"data_type": class_info["input_types"]["optional"][optional_key]}
-                    
-                    class_info["return_types"] = list(node.RETURN_TYPES)
-                    class_info["return_names"] = list(node.RETURN_NAMES) if hasattr(node, "RETURN_NAMES") else None
-                    
-                    class_info["function"] = node.FUNCTION if hasattr(node, "FUNCTION") else None
-                    class_info["function_category"] = node.CATEGORY if hasattr(node, "CATEGORY") else None
-                    
-                    class_info["description"] = node.DESCRIPTION if hasattr(node, "DESCRIPTION") else None
-                    class_info["url"] = node.URL if hasattr(node, "URL") else None
-                    class_info["workflow_url"] = node.WORKFLOW_URL if hasattr(node, "WORKFLOW_URL") else None
-                    class_info["images"] = node.IMAGES if hasattr(node, "IMAGES") else None
-                    
-                    try: 
-                        module = importlib.import_module(node().__class__.__module__)
-                        if not class_info["manifest"]:
-                            if hasattr(module, "MANIFEST"):
-                                manifest = getattr(module, "MANIFEST")
-                            else:
-                                manifest = {}
-                        module_file_path = module.__file__
-                        class_info['manifest'] = manifest
-                    except Exception as e:
-                        cstr("There was a problem loading a node class. Unable to retrieve module path and manifest.").error.print()
-                        print(e)
-                        module_file_path = None
-                        class_info['manifest'] = {}
-                    
-                    class_info['source_path'] = module_file_path
-                    class_info["source_code"] = None
-                    if not NO_SOURCE_CODE:
-                        if inspect.isclass(node):
-                            class_info["source_code"] = highlight_code(inspect.getsource(node)) if not NO_PYGMENTS else '<div class="gen-scroll"><pre>'+inspect.getsource(node)+'</pre></div>'
-                    else:
-                        class_info["source_code"] = None
-                    
-                    category_info["classes"][name] = class_info
-                    
-                    window_title(f"{((pbar_class.n / pbar_class.total) * 100) :.1f}% of {category_index}/{len(NODE_CLASS_MAPPINGS_CATEGORIZED)} | {TITLE}")
-                    pbar_class.update(1)
-            
-            classes[category] = category_info
-            pbar_category.update(1)
-            category_index += 1
+            try:
+                module_path = category
+                category = os.path.basename(category).replace('_', ' ').replace('-', ' ').upper()
+                category_info = {
+                    "category": category,
+                    "classes": {}
+                }
+                with tqdm(total=len(nodes), desc=category, leave=False) as pbar_class:
+                    for name, node in sorted(nodes.items()):
+                        class_info = {
+                            "input_types": {
+                                "required": {},
+                                "optional": {}
+                            },
+                            "return_types": [],
+                            "return_names": [],
+                            "function": "",
+                            "function_category": "",
+                            "description": None,
+                            "url": None,
+                            "workflow_url": None,
+                            "images": None,
+                            "class_name": name,
+                            "display_name": NODE_DISPLAY_NAME_MAPPINGS.get(name, None),
+                            "manifest": {},
+                            "source_path": None,
+                            "source_code": None
+                        }
+
+                        pbar_class.set_postfix_str(node.__name__)
+
+                        if not hasattr(node, "INPUT_TYPES"):
+                            continue
+
+                        class_info["module_path"] = module_path
+
+                        class_info["input_types"]["required"] = node.INPUT_TYPES().get("required", {})
+                        class_info["input_types"]["optional"] = node.INPUT_TYPES().get("optional", {})
+
+                        for required_key in class_info["input_types"]["required"].keys():
+                            if isinstance(class_info["input_types"]["required"][required_key], tuple) and all(isinstance(item, str) for item in class_info["input_types"]["required"][required_key]):
+                                class_info["input_types"]["required"][required_key] = {"data_type": class_info["input_types"]["required"][required_key]}
+
+                        for optional_key in class_info["input_types"]["optional"].keys():
+                            if isinstance(class_info["input_types"]["optional"][optional_key], tuple) and all(isinstance(item, str) for item in class_info["input_types"]["optional"][optional_key]):
+                                class_info["input_types"]["optional"][optional_key] = {"data_type": class_info["input_types"]["optional"][optional_key]}
+
+                        class_info["return_types"] = list(node.RETURN_TYPES)
+                        class_info["return_names"] = list(node.RETURN_NAMES) if hasattr(node, "RETURN_NAMES") else None
+
+                        class_info["function"] = node.FUNCTION if hasattr(node, "FUNCTION") else None
+                        class_info["function_category"] = node.CATEGORY if hasattr(node, "CATEGORY") else None
+
+                        class_info["description"] = node.DESCRIPTION if hasattr(node, "DESCRIPTION") else None
+                        class_info["url"] = node.URL if hasattr(node, "URL") else None
+                        class_info["workflow_url"] = node.WORKFLOW_URL if hasattr(node, "WORKFLOW_URL") else None
+                        class_info["images"] = node.IMAGES if hasattr(node, "IMAGES") else None
+
+                        try:
+                            module = importlib.import_module(node().__class__.__module__)
+                            if not class_info["manifest"]:
+                                if hasattr(module, "MANIFEST"):
+                                    manifest = getattr(module, "MANIFEST")
+                                else:
+                                    manifest = {}
+                            module_file_path = module.__file__
+                            class_info['manifest'] = manifest
+                        except Exception as e:
+                            cstr("There was a problem loading a node class. Unable to retrieve module path and manifest.").error.print()
+                            print(e)
+                            module_file_path = None
+                            class_info['manifest'] = {}
+
+                        class_info['source_path'] = module_file_path
+
+                        if not NO_SOURCE_CODE:
+                            if not inspect.isbuiltin(node) and inspect.isclass(node):
+                                class_info["source_code"] = highlight_code(inspect.getsource(node)) if not NO_PYGMENTS else '<div class="gen-scroll"><pre>'+inspect.getsource(node)+'</pre></div>'
+
+                        category_info["classes"][name] = class_info
+
+                        window_title(f"{((pbar_class.n / pbar_class.total) * 100) :.1f}% of {category_index}/{len(NODE_CLASS_MAPPINGS_CATEGORIZED)} | {TITLE}")
+                        pbar_class.update(1)
+
+                classes[category] = category_info
+                pbar_category.update(1)
+                category_index += 1
+            except Exception as e:
+                cstr(f"There was an error while scraping the node in the '{category}' node package: {e}").error.print()
+                continue
     
     window_title(TITLE)
     return classes
-  
+
+    
 # Setup CSS Colors
 COLORS = get_color_palettes(CP_FILE)
 
@@ -704,22 +709,28 @@ if __name__ == "__main__":
         oargs = sys.argv[1:]
         sys.argv = sys.argv[:1]
 
-        import nodes
-        nodes.load_custom_node = load_custom_node_categorized
-        from nodes import init_custom_nodes, NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
+        try:
+            import nodes
+            nodes.load_custom_node = load_custom_node_categorized
+            from nodes import init_custom_nodes, NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
 
-        sys.argv[1:] = oargs
+            sys.argv[1:] = oargs
 
-        NODE_CLASS_MAPPINGS_BASE = NODE_CLASS_MAPPINGS.copy()
-        NODE_CLASS_MAPPINGS_CATEGORIZED = {}
-        NODE_CLASS_MAPPINGS_CATEGORIZED.update({'NODES (BASE)': NODE_CLASS_MAPPINGS_BASE})
-        init = init_custom_nodes()
+            NODE_CLASS_MAPPINGS_BASE = NODE_CLASS_MAPPINGS.copy()
+            NODE_CLASS_MAPPINGS_CATEGORIZED = {}
+            NODE_CLASS_MAPPINGS_CATEGORIZED.update({'NODES (BASE)': NODE_CLASS_MAPPINGS_BASE})
+            init = init_custom_nodes()
 
-        del init
-        del sys.modules['nodes']
+            del init
+            del sys.modules['nodes']
 
-        sys.stdout = original_stdout
-        sys.stderr = original_stderr
+        except Exception as e:
+            cstr(f"An error occured while loading nodes:").error.print()
+            print(e);
+
+        finally:
+            sys.stdout = original_stdout
+            sys.stderr = original_stderr
         
     # CLI Arguments
         
