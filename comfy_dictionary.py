@@ -213,74 +213,80 @@ def scrape_classes():
             }
             with tqdm(total=len(nodes), desc=category, leave=False) as pbar_class:
                 for name, node in sorted(nodes.items()):
-                    class_info = {
-                        "input_types": {
-                            "required": {},
-                            "optional": {}
-                        },
-                        "return_types": [],
-                        "return_names": [],
-                        "function": "",
-                        "function_category": "",
-                        "description": None,
-                        "url": None,
-                        "workflow_url": None,
-                        "images": None,
-                        "class_name": name,
-                        "display_name": NODE_DISPLAY_NAME_MAPPINGS.get(name, None),
-                        "manifest": {},
-                    }
-                    
-                    pbar_class.set_postfix_str(node.__name__)
-                    
-                    if not hasattr(node, "INPUT_TYPES"):
-                        continue
-                    
-                    class_info["module_path"] = module_path
-                    
-                    class_info["input_types"]["required"] = node.INPUT_TYPES().get("required", {})
-                    class_info["input_types"]["optional"] = node.INPUT_TYPES().get("optional", {})
-                    
-                    for required_key in class_info["input_types"]["required"].keys():
-                        if (isinstance(class_info["input_types"]["required"][required_key], tuple) 
-                            and all(isinstance(item, str) for item in class_info["input_types"]["required"][required_key])):
-                            class_info["input_types"]["required"][required_key] = {"data_type": class_info["input_types"]["required"][required_key]}
-                            
-                    for optional_key in class_info["input_types"]["optional"].keys():
-                        if (isinstance(class_info["input_types"]["optional"][optional_key], tuple) 
-                            and all(isinstance(item, str) for item in class_info["input_types"]["optional"][optional_key])):
-                            class_info["input_types"]["optional"][optional_key] = {"data_type": class_info["input_types"]["optional"][optional_key]}
-                    
-                    class_info["return_types"] = list(node.RETURN_TYPES)
-                    class_info["return_names"] = list(node.RETURN_NAMES) if hasattr(node, "RETURN_NAMES") else None
-                    
-                    class_info["function"] = node.FUNCTION if hasattr(node, "FUNCTION") else None
-                    class_info["function_category"] = node.CATEGORY if hasattr(node, "CATEGORY") else None
-                    
-                    class_info["description"] = node.DESCRIPTION if hasattr(node, "DESCRIPTION") else None
-                    class_info["url"] = node.URL if hasattr(node, "URL") else None
-                    class_info["workflow_url"] = node.WORKFLOW_URL if hasattr(node, "WORKFLOW_URL") else None
-                    class_info["images"] = node.IMAGES if hasattr(node, "IMAGES") else None
-                    
-                    module = importlib.import_module(node().__class__.__module__)
-                    if not class_info["manifest"]:
-                        if hasattr(module, "MANIFEST"):
-                            manifest = getattr(module, "MANIFEST")
-                        else:
-                            manifest = {}
-                    module_file_path = module.__file__
-                    class_info['manifest'] = manifest
-                    
-                    class_info['source_path'] = module_file_path
-                    class_info["source_code"] = None
-                    if not NO_SOURCE_CODE:
-                        if inspect.isclass(node):
-                            class_info["source_code"] = highlight_code(inspect.getsource(node)) if not NO_PYGMENTS else '<div class="gen-scroll"><pre>'+inspect.getsource(node)+'</pre></div>'
-                    else:
+                    try:
+                        class_info = {
+                            "input_types": {
+                                "required": {},
+                                "optional": {}
+                            },
+                            "return_types": [],
+                            "return_names": [],
+                            "function": "",
+                            "function_category": "",
+                            "description": None,
+                            "url": None,
+                            "workflow_url": None,
+                            "images": None,
+                            "class_name": name,
+                            "display_name": NODE_DISPLAY_NAME_MAPPINGS.get(name, None),
+                            "manifest": {},
+                        }
+                        
+                        pbar_class.set_postfix_str(node.__name__)
+                        
+                        if not hasattr(node, "INPUT_TYPES"):
+                            continue
+                        
+                        class_info["module_path"] = module_path
+                        
+                        class_info["input_types"]["required"] = node.INPUT_TYPES().get("required", {})
+                        class_info["input_types"]["optional"] = node.INPUT_TYPES().get("optional", {})
+                        
+                        for required_key in class_info["input_types"]["required"].keys():
+                            if (isinstance(class_info["input_types"]["required"][required_key], tuple) 
+                                and all(isinstance(item, str) for item in class_info["input_types"]["required"][required_key])):
+                                class_info["input_types"]["required"][required_key] = {"data_type": class_info["input_types"]["required"][required_key]}
+                                
+                        for optional_key in class_info["input_types"]["optional"].keys():
+                            if (isinstance(class_info["input_types"]["optional"][optional_key], tuple) 
+                                and all(isinstance(item, str) for item in class_info["input_types"]["optional"][optional_key])):
+                                class_info["input_types"]["optional"][optional_key] = {"data_type": class_info["input_types"]["optional"][optional_key]}
+                        
+                        class_info["return_types"] = list(node.RETURN_TYPES)
+                        class_info["return_names"] = list(node.RETURN_NAMES) if hasattr(node, "RETURN_NAMES") else None
+                        
+                        class_info["function"] = node.FUNCTION if hasattr(node, "FUNCTION") else None
+                        class_info["function_category"] = node.CATEGORY if hasattr(node, "CATEGORY") else None
+                        
+                        class_info["description"] = node.DESCRIPTION if hasattr(node, "DESCRIPTION") else None
+                        class_info["url"] = node.URL if hasattr(node, "URL") else None
+                        class_info["workflow_url"] = node.WORKFLOW_URL if hasattr(node, "WORKFLOW_URL") else None
+                        class_info["images"] = node.IMAGES if hasattr(node, "IMAGES") else None
+                        
+                        module = importlib.import_module(node().__class__.__module__)
+                        if not class_info["manifest"]:
+                            if hasattr(module, "MANIFEST"):
+                                manifest = getattr(module, "MANIFEST")
+                            else:
+                                manifest = {}
+                        module_file_path = module.__file__
+                        class_info['manifest'] = manifest
+                        
+                        class_info['source_path'] = module_file_path
                         class_info["source_code"] = None
-                    
-                    category_info["classes"][name] = class_info
-                    
+                        if not NO_SOURCE_CODE:
+                            if inspect.isclass(node):
+                                class_info["source_code"] = highlight_code(inspect.getsource(node)) if not NO_PYGMENTS else '<div class="gen-scroll"><pre>'+inspect.getsource(node)+'</pre></div>'
+                        else:
+                            class_info["source_code"] = None
+                        
+                        category_info["classes"][name] = class_info
+                    except:
+                        log_message = f"Error loading class {name} from {module_path}"
+                        cstr(log_message).error.print()
+                        traceback.print_exc()
+                        continue
+                
                     window_title(f"{((pbar_class.n / pbar_class.total) * 100) :.1f}% of {category_index}/{len(NODE_CLASS_MAPPINGS_CATEGORIZED)} | {TITLE}")
                     pbar_class.update(1)
             
