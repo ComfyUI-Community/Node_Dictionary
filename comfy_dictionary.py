@@ -40,7 +40,7 @@ UPDATE_PLIST = False
 
 # GENERAL GLOBALS
 ALLOWED_EXTENSIONS = [".png", ".jpg", ".jpeg", ".gif", ".webp"]
-CP_FILE = '.\ComfyUI\web\extensions\core\colorPalette.js'
+CP_FILE = os.path.join(ROOT, 'web'+os.sep+'extensions'+os.sep+'core'+os.sep+'colorPalette.js')
 DB_CACHED = False
 IMAGE_PATHS = [
     os.path.join(os.path.dirname(os.path.realpath(__file__)), "output"),
