@@ -1366,20 +1366,20 @@ if __name__ == "__main__":
             .directory {
                 display: flex;
                 width: 212px !important;
-                max-width: 250px;
-                height: 120px !important;
+                max-width: 200px;
+                height: 80px !important;
                 padding: 10px;
                 flex: 0 0 calc(25% - 10px);
                 height: auto;
                 justify-content: center;
                 align-items: center;
-                //background-color: var(--trans-dark);
                 border: 1px solid transparent;
                 border-radius: 8px;
                 font-weight: bold;
                 word-wrap: break-word;
                 cursor: pointer;
                 transition: all .2s ease;
+                overflow: hidden;
             }
             
             .directory:before {
