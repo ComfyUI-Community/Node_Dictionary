@@ -43,8 +43,8 @@ ALLOWED_EXTENSIONS = [".png", ".jpg", ".jpeg", ".gif", ".webp"]
 CP_FILE = os.path.join(ROOT, 'web'+os.sep+'extensions'+os.sep+'core'+os.sep+'colorPalette.js')
 DB_CACHED = False
 IMAGE_PATHS = [
-    os.path.join(os.path.dirname(os.path.realpath(__file__)), "output"),
-    os.path.join(os.path.dirname(os.path.realpath(__file__)), "input")
+    os.path.join(ROOT, "output"),
+    os.path.join(ROOT, "input")
 ]
 PFILE = (
     os.path.join(os.path.join(ROOT, 'custom_nodes' + os.sep + 'ComfyUI-Manager'), 'custom-node-list.json')
