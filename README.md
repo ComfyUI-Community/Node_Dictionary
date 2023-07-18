@@ -1,5 +1,5 @@
-# ComfyUI Node Dictionary
-Explore your ComfyUI installations node classes for their functionality, source code, and more. 
+# ComfyUI Node Dictionary [Development Ended[
+~~Explore your ComfyUI installations node classes for their functionality, source code, and more.~~ A bad way to go about this. 
 
 <p align="center"><img src="https://i.imgur.com/XTGyBXN.jpg" />
 <a href="https://i.postimg.cc/vQzHqtPC/Screenshot-2023-07-14-135732.png"><img width="300" src="https://i.postimg.cc/vQzHqtPC/Screenshot-2023-07-14-135732.png"></a><a href="https://i.postimg.cc/TYVXyTFB/Screenshot-2023-07-14-135610.png"><img width="300" src="https://i.postimg.cc/TYVXyTFB/Screenshot-2023-07-14-135610.png"></a><a href="https://i.postimg.cc/rFXkFDnS/Screenshot-2023-07-14-135706.png"><img width="300" src="https://i.postimg.cc/rFXkFDnS/Screenshot-2023-07-14-135706.png"></a></p>
